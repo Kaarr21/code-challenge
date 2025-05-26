@@ -1,83 +1,30 @@
-from lib.models.author import Author
-from lib.models.magazine import Magazine
-from lib.models.article import Article
-from lib.db.connection import get_connection
+#!/usr/bin/env python3
+
+from models.author import Author
+from models.article import Article
+from models.magazine import Magazine
 
 def main():
-    print("🔁 Running debug test...\n")
+    print("Welcome to the Article Management System Debug Console!")
+    print("\nAvailable models: Author, Article, Magazine")
+    print("\nExample commands:")
+    print("1. Create an author:")
+    print("   author = Author.create('John Doe')")
+    print("\n2. Find author by ID:")
+    print("   author = Author.find_by_id(1)")
+    print("\n3. Get author's articles:")
+    print("   articles = author.articles()")
+    print("\n4. Create a magazine:")
+    print("   magazine = Magazine.create('Tech Weekly', 'Technology')")
+    print("\n5. Add an article:")
+    print("   author.add_article(magazine.id, 'My New Article')")
+    print("\n6. Find most prolific author:")
+    print("   top_author = Author.most_prolific()")
+    print("\n7. Find magazine's contributors:")
+    print("   contributors = magazine.contributors()")
+    print("\nType 'exit()' to quit")
 
-    conn = get_connection()
-
-    # === AUTHOR TEST ===
-    author = Author.create("Octavia Butler")
-    if author:
-        print(f"✅ Author created: {author.id} - {author.name}")
-    else:
-        print("❌ Author creation failed")
-
-    fetched_author = Author.find_by_id(author.id) if author else None
-    if fetched_author:
-        print(f"✅ Author fetched: {fetched_author.id} - {fetched_author.name}")
-    else:
-        print("❌ Author not found")
-
-    # === MAGAZINE TEST ===
-    magazine = Magazine.create("Tech Weekly", "Technology")
-    if magazine:
-        print(f"✅ Magazine created: {magazine.id} - {magazine.name} ({magazine.category})")
-    else:
-        print("❌ Magazine creation failed")
-
-    fetched_magazine = Magazine.find_by_id(magazine.id) if magazine else None
-    if fetched_magazine:
-        print(f"✅ Magazine fetched: {fetched_magazine.id} - {fetched_magazine.name}")
-    else:
-        print("❌ Magazine not found")
-
-    # === ARTICLE TEST ===
-    if author and magazine:
-        article = Article.create("Inside the Mind of Gen Z", author.id, magazine.id)
-        if article:
-            print(f"✅ Article created: {article.id} - '{article.title}' by Author ID {article.author_id}")
-        else:
-            print("❌ Article creation failed")
-
-        fetched_article = Article.find_by_id(article.id) if article else None
-        if fetched_article:
-            print(f"✅ Article fetched: {fetched_article.id} - '{fetched_article.title}'")
-        else:
-            print("❌ Article not found")
-    else:
-        print("⚠️ Skipping article test — Author or Magazine missing.")
-
-    from lib.models.magazine import Magazine
-
-print("\n🔁 Running magazine debug test...")
-
-mag1 = Magazine.create("The Atlantic", "Politics")
-print(f"✅ Created: {mag1}")
-
-fetched_mag = Magazine.find_by_id(mag1.id)
-print(f"✅ Fetched by ID: {fetched_mag.id} - {fetched_mag.name} ({fetched_mag.category})")
-
-def main():
-    print("\n🔁 Running debug test...\n")
-
-    # Create Author
-    author = Author.create("Octavia Butler")
-    print(f"✅ Author created: {author.id} - {author.name}")
-
-    # Find Author
-    fetched_author = Author.find_by_id(author.id)
-    print(f"✅ Author fetched: {fetched_author.id} - {fetched_author.name}")
-
-    # Create Magazine
-    magazine = Magazine.create("Tech Weekly", "Technology")
-    print(f"✅ Magazine created: {magazine.id} - {magazine.name} ({magazine.category})")
-
-    # ...continue with Article creation
-
-
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
+    import code
+    code.interact(local=locals())
