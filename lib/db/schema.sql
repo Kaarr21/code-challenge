@@ -24,3 +24,8 @@ CREATE TABLE articles (
     FOREIGN KEY (author_id) REFERENCES authors (id),
     FOREIGN KEY (magazine_id) REFERENCES magazines (id)
 );
+
+-- Add to your schema.sql for better query performance
+CREATE INDEX idx_articles_author_id ON articles(author_id);
+CREATE INDEX idx_articles_magazine_id ON articles(magazine_id);
+CREATE INDEX idx_magazines_category ON magazines(category);
