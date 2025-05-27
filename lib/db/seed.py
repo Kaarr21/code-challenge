@@ -1,41 +1,41 @@
-import sqlite3
+# seed.py: Populate the database with initial data
 
-#the connection to the database.
-conn = sqlite3.connect("lib/db/database.db")
-cursor = conn.cursor()
+from lib.db.connection import get_connection
 
-#clearing existing data
-cursor.execute("DELETE FROM articles")
-cursor.execute("DELETE FROM authors")
-cursor.execute("DELETE FROM magazines")
+def seed_data():
+    conn = get_connection()
+    cursor = conn.cursor()
 
-#doing an insert into authors
-cursor.execute("INSERT INTO authors (name) VALUES ('Fahiye Muhammad')")
-cursor.execute("INSERT INTO authors (name) VALUES ('Sadyq Alnuur')")
-cursor.execute("INSERT INTO authors (name) VALUES ('Mark Kenyua')")
+    # Insert Authors
+    authors = ["Alice Smith", "Bob Johnson", "Charlie Rose"]
+    for name in authors:
+        cursor.execute("INSERT INTO authors (name) VALUES (?)", (name,))
 
-#Inserting  into magazines 
-cursor.execute("INSERT INTO magazines (name, category) VALUES ('Science Monthly', 'Science')")
-cursor.execute("INSERT INTO magazines (name, category) VALUES ('Writers Digest', 'Literature')")
-cursor.execute("INSERT INTO magazines (name, category) VALUES ('Tech Africa', 'Technology')")
+    # Insert Magazines
+    magazines = [
+        ("Tech Weekly", "Technology"),
+        ("Health Monthly", "Health"),
+        ("Art & Culture", "Art")
+    ]
+    for name, category in magazines:
+        cursor.execute("INSERT INTO magazines (name, category) VALUES (?, ?)", (name, category))
 
-# Inserting into articles
-cursor.execute("""
-    INSERT INTO  articles (title, content, author_id, magazine_id)
-    VALUES ('The rise of AI in Africa', 'Artificial intelligence is booming across africa...', 1, 3)               
-""")
-cursor.execute("""
-    INSERT INTO articles (title, content, author_id, magazine_id)
-    VALUES ('Storytelling as resistance', 'Literature has always been a powerful tool...', 2, 2)
-""")
-cursor.execute("""
-    INSERT INTO articles (title, content, author_id, magazine_id)
-    VALUES ('Environmental Challenges', 'Climate chamge continues to affect the continent...', 3, 1)           
-""")
+    # Insert Articles
+    articles = [
+        ("AI in 2025", 1, 1),
+        ("Meditation Benefits", 2, 2),
+        ("Modern Art Trends", 3, 3),
+        ("Tech for Good", 1, 1),
+        ("Healthy Eating", 2, 2),
+        ("Gallery Reviews", 3, 3),
+        ("Cultural Commentary", 1, 3)
+    ]
+    for title, author_id, magazine_id in articles:
+        cursor.execute("INSERT INTO articles (title, author_id, magazine_id) VALUES (?, ?, ?)", (title, author_id, magazine_id))
 
-conn.commit()
-conn.close
+    conn.commit()
+    conn.close()
 
-print("Database seeded successfully!")
-
-
+if __name__ == "__main__":
+    seed_data()
+    print("Database seeded successfully.")

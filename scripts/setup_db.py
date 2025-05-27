@@ -1,14 +1,33 @@
+# setup_db.py: Initializes and seeds the database
+
 import sqlite3
+import os
 
-conn = sqlite3.connect('lib/db/database.db')
-cursor = conn.cursor()
+SCHEMA_PATH = "lib/db/schema.sql"
+DB_PATH = "articles.db"
 
-with open('lib/db/schema.sql') as file:
-    schema = file.read()
-    cursor.executescript(schema)
+# Step 1: Create schema
+def setup_schema():
+    if not os.path.exists(SCHEMA_PATH):
+        print("Schema file not found.")
+        return
 
-conn.commit()
-conn.close()
+    with open(SCHEMA_PATH, "r") as f:
+        schema_sql = f.read()
 
-print("Database setup complete")
+    conn = sqlite3.connect(DB_PATH)
+    cursor = conn.cursor()
+    cursor.executescript(schema_sql)
+    conn.commit()
+    conn.close()
+    print("Schema created.")
 
+# Step 2: Seed data
+def seed_database():
+    from lib.db.seed import seed_data
+    seed_data()
+
+if __name__ == "__main__":
+    setup_schema()
+    seed_database()
+    print("Database setup complete.")
